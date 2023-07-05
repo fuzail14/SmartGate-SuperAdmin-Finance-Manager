@@ -22,5 +22,6 @@ class HomePageController extends GetxController {
         heading: 'Logout', imageUrl: 'assets/home_page_logout_vector.png'));
 
     user = userdata;
+    print(user.data!.superadminid!);
   }
 }

@@ -14,7 +14,9 @@ class Api {
   static const String payBill = "${baseUrl}paybill";
   static const String allSocities = "${baseUrl}society/allSocities";
   static const String view_society = "${baseUrl}society/viewsociety";
-  static const String delete_society = "${baseUrl}society/deletesociety";
-  static const String update_society = "${baseUrl}society/updatesociety";
+  static const String filterSocietyBuilding =
+      "${baseUrl}society/filtersocietybuilding";
+
   static const String searchsociety = "${baseUrl}society/searchsociety";
+  static const String viewresidents = "${baseUrl}/viewresidents";
 }

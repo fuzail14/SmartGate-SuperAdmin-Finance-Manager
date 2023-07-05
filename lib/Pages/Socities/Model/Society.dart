@@ -3,20 +3,43 @@ class Society {
     required this.socitiesdata,
   });
   late final List<Socitiesdata> socitiesdata;
-  
-  Society.fromJson(Map<String, dynamic> json){
-    socitiesdata = List.from(json['socitiesdata']).map((e)=>Socitiesdata.fromJson(e)).toList();
+
+  Society.fromJson(Map<String, dynamic> json) {
+    socitiesdata = List.from(json['socitiesdata'])
+        .map((e) => Socitiesdata.fromJson(e))
+        .toList();
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
-    _data['socitiesdata'] = socitiesdata.map((e)=>e.toJson()).toList();
+    _data['socitiesdata'] = socitiesdata.map((e) => e.toJson()).toList();
     return _data;
   }
 }
 
 class Socitiesdata {
   Socitiesdata({
+    required this.societydata,
+    required this.message,
+  });
+  late final Societydata societydata;
+  late final String message;
+
+  Socitiesdata.fromJson(Map<String, dynamic> json) {
+    societydata = Societydata.fromJson(json['societydata']);
+    message = json['message'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['societydata'] = societydata.toJson();
+    _data['message'] = message;
+    return _data;
+  }
+}
+
+class Societydata {
+  Societydata({
     required this.id,
     required this.country,
     required this.state,
@@ -29,6 +52,8 @@ class Socitiesdata {
     required this.structuretype,
     required this.createdAt,
     required this.updatedAt,
+    required this.societyid,
+    required this.subadminid,
   });
   late final int id;
   late final String country;
@@ -42,8 +67,10 @@ class Socitiesdata {
   late final int structuretype;
   late final String createdAt;
   late final String updatedAt;
-  
-  Socitiesdata.fromJson(Map<String, dynamic> json){
+  late final int societyid;
+  late final int subadminid;
+
+  Societydata.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     country = json['country'];
     state = json['state'];
@@ -56,6 +83,8 @@ class Socitiesdata {
     structuretype = json['structuretype'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    societyid = json['societyid'];
+    subadminid = json['subadminid'];
   }
 
   Map<String, dynamic> toJson() {
@@ -72,6 +101,8 @@ class Socitiesdata {
     _data['structuretype'] = structuretype;
     _data['created_at'] = createdAt;
     _data['updated_at'] = updatedAt;
+    _data['societyid'] = societyid;
+    _data['subadminid'] = subadminid;
     return _data;
   }
 }

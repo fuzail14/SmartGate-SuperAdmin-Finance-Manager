@@ -12,12 +12,12 @@ import 'package:super_admin_finance_manager/Pages/Socities/Controller/socities_c
 
 import '../../../Constants/colors.dart';
 import '../../../Data/Api Resp/api_response.dart';
+import '../../../Routes/set_routes.dart';
 import '../../../Widgets/Loader/loader.dart';
 import '../../../Widgets/My App Bar/my_app_bar.dart';
-
-import '../Widgets/build_data_column_status_card.dart';
-import '../Widgets/build_data_column_text.dart';
-import '../Widgets/build_data_row_text.dart';
+import '../../../Widgets/TableColumnRow/build_data_column_text.dart';
+import '../../../Widgets/TableColumnRow/build_data_row_text.dart';
+import '../Widgets/custom_alert_dialog.dart';
 
 class SocitiesView extends GetView {
   @override
@@ -72,16 +72,21 @@ class SocitiesView extends GetView {
                 rows: [
                   for (int i = 0; i < controller.li.length; i++) ...[
                     _dataRows(
-                        id: controller.li[i].id.toString(),
-                        Societyname: '${controller.li[i].name!.toString()}',
-                        Address: controller.li[i].address!.toString(),
-                        Country: controller.li[i].country!.toString(),
-                        State: controller.li[i].state!.toString(),
-                        City: controller.li[i].city!.toString(),
-                        Area: controller.li[i].area!.toString(),
-                        Type: controller.li[i].type!.toString(),
-                        context: context,
-                        index: i),
+                      id: controller.li[i].societydata.id.toString(),
+                      subadminid:
+                          controller.li[i].societydata.subadminid.toString(),
+                      Societyname:
+                          '${controller.li[i].societydata.name.toString()}',
+                      Address: controller.li[i].societydata.address.toString(),
+                      Country: controller.li[i].societydata.country.toString(),
+                      State: controller.li[i].societydata.state.toString(),
+                      City: controller.li[i].societydata.city.toString(),
+                      Area: controller.li[i].societydata.area.toString(),
+                      Type: controller.li[i].societydata.type.toString(),
+                      context: context,
+                      index: i,
+                      user: controller.user,
+                    ),
                   ]
                 ])));
   }
@@ -115,7 +120,9 @@ class SocitiesView extends GetView {
       required Type,
       required BuildContext context,
       required index,
-      required id}) {
+      required id,
+      required subadminid,
+      required user}) {
     return DataRow(
       color: MaterialStateProperty.resolveWith(
           (states) => index % 2 == 0 ? HexColor('#FDFDFD') : null),
@@ -129,7 +136,7 @@ class SocitiesView extends GetView {
         DataCell(BuildDataRowText(text: Type ?? "")),
         DataCell(GestureDetector(
             onTap: () {
-              print('onTapppp');
+              Get.offNamed(residentsView, arguments: [user, subadminid]);
             },
             child: Icon(Icons.details_rounded))),
       ],
@@ -152,7 +159,6 @@ class SocitiesView extends GetView {
               () async {
                 controller.searchQuery = value.toString();
                 if (controller.searchQuery!.isEmpty) {
-                  print('Please Enter Something');
                   controller.viewAllSocietiesApi(
                       superAdminId: controller.user.data!.superadminid,
                       bearerToken: controller.user.bearer.toString());
@@ -182,11 +188,15 @@ class SocitiesView extends GetView {
               suffixIcon: InkWell(
                 child: const Icon(Icons.cancel),
                 onTap: () {
-                  controller.searchController.clear();
+                  if (controller.searchController.text.isEmpty) {
+                    print("empty");
+                  } else {
+                    controller.searchController.clear();
 
-                  controller.viewAllSocietiesApi(
-                      superAdminId: controller.user.data!.superadminid,
-                      bearerToken: controller.user.bearer.toString());
+                    controller.viewAllSocietiesApi(
+                        superAdminId: controller.user.data!.superadminid,
+                        bearerToken: controller.user.bearer.toString());
+                  }
                 },
               ),
               prefixIcon: const Icon(
@@ -201,11 +211,11 @@ class SocitiesView extends GetView {
             flex: 1,
             child: InkWell(
                 onTap: () {
-                  // showDialog(
-                  //     context: context,
-                  //     builder: (context) {
-                  //       return _filterDialog(context);
-                  //     });
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return _filterDialog(context);
+                      });
                 },
                 child: SvgPicture.asset(
                   'assets/bill_page_filter.svg',
@@ -229,137 +239,75 @@ class SocitiesView extends GetView {
     );
   }
 
-  // GetBuilder<BillPageFilterController> _filterDialog(BuildContext context) {
-  //   return GetBuilder<BillPageFilterController>(
-  //       init: BillPageFilterController(),
-  //       builder: (controller) {
-  //         return CustomAlertDialog(
-  //           context: context,
-  //           icon: Icons.filter_list_outlined,
-  //           positiveButtonColor: primaryColor,
-  //           titleText: 'Filters',
-  //           positiveButtonText: 'Filters',
-  //           negativeButtonText: 'Clear',
-  //           onTapNegative: () {
-  //             controller.billPageController.currentMonthBillsApi(
-  //                 financeManagerId: controller.billPageController.user.data!.id,
-  //                 bearerToken:
-  //                     controller.billPageController.user.bearer.toString());
-  //             Get.back();
-  //           },
-  //           onTapPositive: () async {
-  //             log(controller.startDate.toString());
-  //             log(controller.statusVal.toString());
-  //             log(controller.paymentTypeValue.toString());
-  //             log(controller.billPageController.user.bearer.toString());
+  GetBuilder<SocitiesController> _filterDialog(BuildContext context) {
+    return GetBuilder<SocitiesController>(
+        init: SocitiesController(),
+        builder: (controller) {
+          return CustomAlertDialog(
+            context: context,
+            icon: Icons.filter_list_outlined,
+            positiveButtonColor: primaryColor,
+            titleText: 'Filters',
+            positiveButtonText: 'Filters',
+            negativeButtonText: 'Clear',
+            onTapNegative: () {
+              // controller.billPageController.currentMonthBillsApi(
+              //     financeManagerId: controller.billPageController.user.data!.id,
+              //     bearerToken:
+              //         controller.billPageController.user.bearer.toString());
 
-  //             if (controller.startDate == "" &&
-  //                 controller.statusVal == null &&
-  //                 controller.paymentTypeValue == null) {
-  //               controller.billPageController.currentMonthBillsApi(
-  //                   financeManagerId:
-  //                       controller.billPageController.user.data!.id,
-  //                   bearerToken:
-  //                       controller.billPageController.user.bearer.toString());
-  //               Get.back();
-  //             } else {
-  //               controller.filterBillsApi(
-  //                   bearerToken:
-  //                       controller.billPageController.user.bearer.toString(),
-  //                   financeManagerId:
-  //                       controller.billPageController.user.data!.id,
-  //                   startDate: controller.startDate.toString(),
-  //                   endDate: controller.startDate.toString(),
-  //                   status: controller.statusVal.toString(),
-  //                   paymentType: controller.paymentTypeValue.toString());
-  //             }
-  //           },
-  //           child: Column(
-  //             crossAxisAlignment: CrossAxisAlignment.start,
-  //             children: [
-  //               Row(
-  //                 children: [
-  //                   Expanded(
-  //                     child: ListTile(
-  //                       title: Text(
-  //                         'Start Date',
-  //                         style: GoogleFonts.montserrat(
-  //                             color: primaryColor,
-  //                             fontSize: 14.sp,
-  //                             fontStyle: FontStyle.normal,
-  //                             fontWeight: FontWeight.w600),
-  //                       ),
-  //                       subtitle: Text(
-  //                         controller.startDate.toString() ??
-  //                             'Select Start Date',
-  //                         style: GoogleFonts.montserrat(
-  //                             fontSize: 14.sp,
-  //                             fontStyle: FontStyle.normal,
-  //                             fontWeight: FontWeight.w600),
-  //                       ),
-  //                       onTap: () => controller.selectDate(context),
-  //                     ),
-  //                   ),
-  //                   Expanded(
-  //                     child: ListTile(
-  //                       title: Text(
-  //                         'End Date',
-  //                         style: GoogleFonts.montserrat(
-  //                             color: primaryColor,
-  //                             fontSize: 14.sp,
-  //                             fontStyle: FontStyle.normal,
-  //                             fontWeight: FontWeight.w600),
-  //                       ),
-  //                       subtitle: Text(
-  //                         controller.startDate?.toString() ?? 'Select End Date',
-  //                         style: GoogleFonts.montserrat(
-  //                             fontSize: 14.sp,
-  //                             fontStyle: FontStyle.normal,
-  //                             fontWeight: FontWeight.w600),
-  //                       ),
-  //                       onTap: () => controller.selectDate(context),
-  //                     ),
-  //                   ),
-  //                 ],
-  //               ),
-  //               20.h.ph,
-  //               Text(
-  //                 "PaymentType",
-  //                 style: GoogleFonts.montserrat(
-  //                     color: primaryColor,
-  //                     fontSize: 14.sp,
-  //                     fontStyle: FontStyle.normal,
-  //                     fontWeight: FontWeight.w600),
-  //               ),
-  //               10.h.ph,
-  //               ReusableDropdown(
-  //                 value: controller.paymentTypeValue,
-  //                 items: controller.paymentTypes,
-  //                 onChanged: (value) {
-  //                   controller.setPaymentTypeVal(value: value);
-  //                 },
-  //                 hint: "Select Payment Method",
-  //               ),
-  //               20.h.ph,
-  //               Text(
-  //                 "StatusType",
-  //                 style: GoogleFonts.montserrat(
-  //                     color: primaryColor,
-  //                     fontSize: 14.sp,
-  //                     fontStyle: FontStyle.normal,
-  //                     fontWeight: FontWeight.w600),
-  //               ),
-  //               10.h.ph,
-  //               ReusableDropdown(
-  //                   value: controller.statusVal,
-  //                   items: controller.statusTypes,
-  //                   onChanged: (value) {
-  //                     controller.setStatusTypeVal(value: value);
-  //                   },
-  //                   hint: 'Select Status Type')
-  //             ],
-  //           ),
-  //         );
-  //       });
-  // }
+              Get.back();
+            },
+            onTapPositive: () async {
+              controller.filterApi(
+                  bearerToken: controller.user.bearer,
+                  superAdminId: controller.user.data!.superadminid,
+                  type: controller.selectedOption);
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: RadioListTile(
+                        title: Text(
+                          'Society',
+                          style: GoogleFonts.montserrat(
+                              color: primaryColor,
+                              fontSize: 14.sp,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        value: 'society',
+                        groupValue: controller.selectedOption,
+                        onChanged: (value) {
+                          controller.radioButtonBuild(value!);
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: RadioListTile(
+                        title: Text(
+                          'Building',
+                          style: GoogleFonts.montserrat(
+                              color: primaryColor,
+                              fontSize: 14.sp,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        value: 'building',
+                        groupValue: controller.selectedOption,
+                        onChanged: (value) {
+                          controller.radioButtonBuild(value!);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        });
+  }
 }

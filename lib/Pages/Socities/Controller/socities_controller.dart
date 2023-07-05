@@ -17,6 +17,7 @@ class SocitiesController extends GetxController {
   String typeSociety = 'society';
   String? searchQuery;
   Timer? debouncer;
+  String? selectedOption;
 
   final socitiesRepo = SocitiesRepository();
   List<String> dataColumnNames = [
@@ -45,10 +46,13 @@ class SocitiesController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     user = userdata;
+
     viewAllSocietiesApi(
         bearerToken: user.bearer, superAdminId: user.data!.superadminid);
 
     log(user.bearer.toString());
+    log(user.data!.superadminid.toString());
+
     log(li.toString());
   }
 
@@ -57,9 +61,10 @@ class SocitiesController extends GetxController {
 
     socitiesRepo
         .socitiesApi(
-            bearerToken: bearerToken,
-            superAdminId: superAdminId,
-            type: typeSociety)
+      bearerToken: bearerToken,
+      superAdminId: superAdminId,
+      //type: typeSociety
+    )
         .then((value) {
       li.clear();
       update();
@@ -132,5 +137,41 @@ class SocitiesController extends GetxController {
     super.dispose();
     debouncer?.cancel();
     searchController.dispose();
+  }
+
+  radioButtonBuild(String val) {
+    selectedOption = val;
+    update();
+  }
+
+  filterApi({
+    required bearerToken,
+    required superAdminId,
+    required type,
+  }) {
+    li.clear();
+    setResponseStatus(Status.loading);
+
+    update();
+
+    socitiesRepo
+        .filterSocitieBuilding(
+            superAdminId: superAdminId, bearerToken: bearerToken, type: type)
+        .then((value) {
+      setResponseStatus(Status.completed);
+      li.clear();
+      update();
+
+      for (int i = 0; i < value.socitiesdata.length; i++) {
+        li.add(value.socitiesdata[i]);
+      }
+      Get.back();
+    }).onError((error, stackTrace) {
+      setResponseStatus(Status.error);
+
+      Get.snackbar('Error', '$error ', backgroundColor: Colors.white);
+      log(error.toString());
+      log(stackTrace.toString());
+    });
   }
 }

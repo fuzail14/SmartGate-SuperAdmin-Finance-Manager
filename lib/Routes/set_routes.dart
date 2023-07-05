@@ -9,7 +9,6 @@ const String generateHouseBillPage = '/generate-house-bill-page';
 const String generateSocietyApartmentBillsPage =
     '/generate-society-apartment-bills-page';
 
-const String socitiesView =
-    '/Socities_View';
+const String socitiesView = '/Socities_View';
 
-    
+const String residentsView = '/Residents_View';
