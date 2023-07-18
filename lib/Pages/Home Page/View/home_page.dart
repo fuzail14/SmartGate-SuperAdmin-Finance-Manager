@@ -54,7 +54,6 @@ class HomePage extends GetView {
                                   children: controller.homePageLi.map((e) {
                                     return GestureDetector(
                                       onTap: () {
-                                        print('ontap');
                                         homePageNavigation(
                                             user: controller.user,
                                             heading: e.heading);
@@ -123,10 +122,10 @@ class HomePageList {
   HomePageList({required this.imageUrl, required this.heading});
 }
 
-enum HomePageType { socities, generatebill, logout }
+enum HomePageType { communities, generatebill, logout }
 
 homePageNavigation({required String? heading, required User user}) {
-  if (HomePageType.socities.name == heading!.toLowerCase()) {
+  if (HomePageType.communities.name == heading!.toLowerCase()) {
     Get.toNamed(socitiesView, arguments: user);
   }
   if (HomePageType.generatebill.name == heading.toLowerCase()) {

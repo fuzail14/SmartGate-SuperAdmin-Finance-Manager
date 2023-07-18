@@ -44,8 +44,8 @@ class Residentslist {
     required this.roleid,
     required this.rolename,
     required this.image,
-     this.fcmtoken,
-    required this.societydata,
+    required this.fcmtoken,
+    required this.bills,
   });
   late final int id;
   late final int residentid;
@@ -70,8 +70,8 @@ class Residentslist {
   late final int roleid;
   late final String rolename;
   late final String image;
-  late final String? fcmtoken;
-  late final List<Societydata> societydata;
+  late final String fcmtoken;
+  late final List<Bills> bills;
   
   Residentslist.fromJson(Map<String, dynamic> json){
     id = json['id'];
@@ -97,8 +97,8 @@ class Residentslist {
     roleid = json['roleid'];
     rolename = json['rolename'];
     image = json['image'];
-    fcmtoken = null;
-    societydata = List.from(json['societydata']).map((e)=>Societydata.fromJson(e)).toList();
+    fcmtoken = json['fcmtoken'];
+    bills = List.from(json['bills']).map((e)=>Bills.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -127,32 +127,86 @@ class Residentslist {
     _data['rolename'] = rolename;
     _data['image'] = image;
     _data['fcmtoken'] = fcmtoken;
-    _data['societydata'] = societydata.map((e)=>e.toJson()).toList();
+    _data['bills'] = bills.map((e)=>e.toJson()).toList();
     return _data;
   }
 }
 
-class Societydata {
-  Societydata({
+class Bills {
+  Bills({
     required this.id,
-    required this.superadminid,
-    required this.societyid,
+    required this.charges,
+    required this.latecharges,
+    required this.appcharges,
+    required this.tax,
+    required this.balance,
+    required this.payableamount,
+    required this.totalpaidamount,
     required this.subadminid,
+    required this.financemanagerid,
+    required this.residentid,
+    required this.propertyid,
+    required this.measurementid,
+    required this.duedate,
+    required this.billstartdate,
+    required this.billenddate,
+    required this.month,
+    required this.billtype,
+    required this.paymenttype,
+    required this.status,
+    required this.isbilllate,
+    required this.noofappusers,
     required this.createdAt,
     required this.updatedAt,
   });
   late final int id;
-  late final int superadminid;
-  late final int societyid;
+  late final String charges;
+  late final String latecharges;
+  late final String appcharges;
+  late final String tax;
+  late final String balance;
+  late final String payableamount;
+  late final String totalpaidamount;
   late final int subadminid;
+  late final int financemanagerid;
+  late final int residentid;
+  late final int propertyid;
+  late final int measurementid;
+  late final String duedate;
+  late final String billstartdate;
+  late final String billenddate;
+  late final String month;
+  late final String billtype;
+  late final String paymenttype;
+  late final String status;
+  late final int isbilllate;
+  late final int noofappusers;
   late final String createdAt;
   late final String updatedAt;
   
-  Societydata.fromJson(Map<String, dynamic> json){
+  Bills.fromJson(Map<String, dynamic> json){
     id = json['id'];
-    superadminid = json['superadminid'];
-    societyid = json['societyid'];
+    charges = json['charges'];
+    latecharges = json['latecharges'];
+    appcharges = json['appcharges'];
+    tax = json['tax'];
+    balance = json['balance'];
+    payableamount = json['payableamount'];
+    totalpaidamount = json['totalpaidamount'];
     subadminid = json['subadminid'];
+    financemanagerid = json['financemanagerid'];
+    residentid = json['residentid'];
+    propertyid = json['propertyid'];
+    measurementid = json['measurementid'];
+    duedate = json['duedate'];
+    billstartdate = json['billstartdate'];
+    billenddate = json['billenddate'];
+    month = json['month'];
+    billtype = json['billtype'];
+    paymenttype = json['paymenttype'];
+    status = json['status'];
+    isbilllate = json['isbilllate'];
+    noofappusers = json['noofappusers'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
@@ -160,9 +214,27 @@ class Societydata {
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['id'] = id;
-    _data['superadminid'] = superadminid;
-    _data['societyid'] = societyid;
+    _data['charges'] = charges;
+    _data['latecharges'] = latecharges;
+    _data['appcharges'] = appcharges;
+    _data['tax'] = tax;
+    _data['balance'] = balance;
+    _data['payableamount'] = payableamount;
+    _data['totalpaidamount'] = totalpaidamount;
     _data['subadminid'] = subadminid;
+    _data['financemanagerid'] = financemanagerid;
+    _data['residentid'] = residentid;
+    _data['propertyid'] = propertyid;
+    _data['measurementid'] = measurementid;
+    _data['duedate'] = duedate;
+    _data['billstartdate'] = billstartdate;
+    _data['billenddate'] = billenddate;
+    _data['month'] = month;
+    _data['billtype'] = billtype;
+    _data['paymenttype'] = paymenttype;
+    _data['status'] = status;
+    _data['isbilllate'] = isbilllate;
+    _data['noofappusers'] = noofappusers;
     _data['created_at'] = createdAt;
     _data['updated_at'] = updatedAt;
     return _data;

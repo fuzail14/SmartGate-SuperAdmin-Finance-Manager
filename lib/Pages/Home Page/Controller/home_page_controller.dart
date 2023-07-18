@@ -14,10 +14,8 @@ class HomePageController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     homePageLi.add(HomePageList(
-        heading: 'Socities', imageUrl: 'assets/home_page_bill_vector.png'));
-    homePageLi.add(HomePageList(
-        heading: 'Buildings',
-        imageUrl: 'assets/home_page_generate_bill_vector.png'));
+        heading: 'Communities', imageUrl: 'assets/home_page_bill_vector.png'));
+
     homePageLi.add(HomePageList(
         heading: 'Logout', imageUrl: 'assets/home_page_logout_vector.png'));
 

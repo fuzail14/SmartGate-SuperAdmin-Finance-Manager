@@ -64,15 +64,33 @@ class ResidentsView extends GetView {
                 rows: [
                   for (int i = 0; i < controller.li.length; i++) ...[
                     _dataRows(
-                        id: controller.li[i].id.toString(),
-                        firstname: '${controller.li[i].firstname.toString()}',
-                        lastname: '${controller.li[i].firstname.toString()}',
-                        Address: controller.li[i].address.toString(),
-                        Country: controller.li[i].country.toString(),
-                        State: controller.li[i].state.toString(),
-                        City: controller.li[i].city.toString(),
-                        Area: controller.li[i].houseaddress.toString(),
-                        Type: controller.li[i].mobileno.toString(),
+                        Name: controller.li[i].firstname
+                                .toUpperCase()
+                                .toString() +
+                            " " +
+                            controller.li[i].lastname.toString().toUpperCase(),
+                        Address: controller.li[i].address.toString().toUpperCase(),
+                        propertytype: controller.li[i].propertytype.toUpperCase().toString(),
+                        billstartdate:
+                            controller.li[i].bills[i].billstartdate.toString(),
+                        billenddate:
+                            controller.li[i].bills[i].billenddate.toString(),
+                        month: controller.li[i].bills[i].month.toString(),
+                        charges: controller.li[i].bills[i].charges.toString(),
+                        latecharges:
+                            controller.li[i].bills[i].latecharges.toString(),
+                        appcharges:
+                            controller.li[i].bills[i].appcharges.toString(),
+                        tax: controller.li[i].bills[i].tax.toString(),
+                        balance: controller.li[i].bills[i].balance.toString(),
+                        payableamount:
+                            controller.li[i].bills[i].payableamount.toString(),
+                        totalpaidamount: controller
+                            .li[i].bills[i].totalpaidamount
+                            .toString(),
+                        status: controller.li[i].bills[i].status.toString().toUpperCase(),
+                        paymenttype:
+                            controller.li[i].bills[i].paymenttype.toString().toUpperCase(),
                         context: context,
                         index: i),
                   ]
@@ -98,34 +116,49 @@ class ResidentsView extends GetView {
     );
   }
 
-  DataRow _dataRows(
-      {required firstname,
-      required lastname,
-      required Address,
-      required Country,
-      required State,
-      required City,
-      required Area,
-      required Type,
-      required BuildContext context,
-      required index,
-      required id}) {
+  DataRow _dataRows({
+    required Name,
+    required Address,
+    required propertytype,
+    required billstartdate,
+    required billenddate,
+    required month,
+    required charges,
+    required latecharges,
+    required appcharges,
+    required tax,
+    required balance,
+    required payableamount,
+    required totalpaidamount,
+    required status,
+    required paymenttype,
+    required BuildContext context,
+    required index,
+  }) {
     return DataRow(
       color: MaterialStateProperty.resolveWith(
           (states) => index % 2 == 0 ? HexColor('#FDFDFD') : null),
       cells: <DataCell>[
-        DataCell(BuildDataRowText(text: firstname ?? "")),
+        DataCell(BuildDataRowText(text: Name ?? "")),
         DataCell(BuildDataRowText(text: Address ?? "")),
-        DataCell(BuildDataRowText(text: Country ?? "")),
-        DataCell(BuildDataRowText(text: State ?? "")),
-        DataCell(BuildDataRowText(text: City ?? "")),
-        DataCell(BuildDataRowText(text: Area ?? "")),
-        DataCell(BuildDataRowText(text: Type ?? "")),
-        DataCell(GestureDetector(
-            onTap: () {
-              print('onTapppp');
-            },
-            child: Icon(Icons.details_rounded))),
+        DataCell(BuildDataRowText(text: propertytype ?? "")),
+        DataCell(BuildDataRowText(text: billstartdate ?? "")),
+        DataCell(BuildDataRowText(text: billenddate ?? "")),
+        DataCell(BuildDataRowText(text: month ?? "")),
+        DataCell(BuildDataRowText(text: charges ?? "")),
+        DataCell(BuildDataRowText(text: latecharges ?? "")),
+        DataCell(BuildDataRowText(text: appcharges ?? "")),
+        DataCell(BuildDataRowText(text: tax ?? "")),
+        DataCell(BuildDataRowText(text: balance ?? "")),
+        DataCell(BuildDataRowText(text: payableamount ?? "")),
+        DataCell(BuildDataRowText(text: totalpaidamount ?? "")),
+        DataCell(BuildDataRowText(text: status ?? "")),
+        DataCell(BuildDataRowText(text: paymenttype ?? "")),
+        // DataCell(GestureDetector(
+        //     onTap: () {
+        //       print('onTapppp');
+        //     },
+        //     child: Icon(Icons.details_rounded))),
       ],
     );
   }

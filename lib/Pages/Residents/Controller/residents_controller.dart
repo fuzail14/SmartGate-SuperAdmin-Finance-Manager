@@ -22,14 +22,22 @@ class ResidentsController extends GetxController {
 
   final residentsRepo = ResidentsRepository();
   List<String> dataColumnNames = [
-    "Society Name",
+    "Name",
     "Address",
-    "Country",
-    "State",
-    "City",
-    "Area",
-    "Type",
-    "Detail",
+    "propertytype",
+    "billstartdate",
+    "billenddate",
+    "month",
+    "charges",
+    "latecharges",
+    "appcharges",
+    "tax",
+    "balance",
+    "payableamount",
+    "totalpaidamount",
+    "status",
+    "Payment Type",
+    
   ];
 
   late final Resident resident;

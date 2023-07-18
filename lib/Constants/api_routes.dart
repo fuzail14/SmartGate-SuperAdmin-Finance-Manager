@@ -1,6 +1,6 @@
 class Api {
-  static const String imageBaseUrl = 'http://http://192.168.2.45:8080/storage/';
-  static const String baseUrl = 'http://192.168.2.45:8080/api/';
+  static const String imageBaseUrl = 'http://http://192.168.2.48:8080/storage/';
+  static const String baseUrl = 'http://192.168.2.48:8080/api/';
   static const String login = "${baseUrl}login";
   static const String fcmtokenrefresh = "${baseUrl}fcmtokenrefresh";
   static const String currentMonthBills =
@@ -18,5 +18,5 @@ class Api {
       "${baseUrl}society/filtersocietybuilding";
 
   static const String searchsociety = "${baseUrl}society/searchsociety";
-  static const String viewresidents = "${baseUrl}/viewresidents";
+  static const String viewresidents = "${baseUrl}viewresidents";
 }
