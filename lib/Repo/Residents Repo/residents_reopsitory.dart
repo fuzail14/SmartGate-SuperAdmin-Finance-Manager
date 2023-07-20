@@ -12,20 +12,21 @@ class ResidentsRepository {
     required subAdminId,
     //required type
   }) async {
-    var response = await networkServices
-        .getReq("${Api.viewresidents}/$subAdminId", bearerToken: bearerToken);
+    var response = await networkServices.getReq(
+        "${Api.allresidentsBill}/$subAdminId",
+        bearerToken: bearerToken);
 
     return Resident.fromJson(response);
   }
 
-  // Future<Society> searchApi({required query, required bearerToken}) async {
-  //   var response = await networkServices.getReq("${Api.searchsociety}/$query",
-  //       bearerToken: bearerToken);
+  Future<Resident> searchApi({required query, required subAdminId, required bearerToken}) async {
+    var response = await networkServices
+        .getReq("${Api.searchResidentsBill}/$subAdminId/$query", bearerToken: bearerToken);
 
-  //   log(response.toString());
+    log(response.toString());
 
-  //   return Society.fromJson(response);
-  // }
+    return Resident.fromJson(response);
+  }
 
   // Future<Society> filterSocitieBuilding(
   //     {required bearerToken, required superAdminId, required type}) async {

@@ -18,5 +18,6 @@ class Api {
       "${baseUrl}society/filtersocietybuilding";
 
   static const String searchsociety = "${baseUrl}society/searchsociety";
-  static const String viewresidents = "${baseUrl}viewresidents";
+  static const String allresidentsBill = "${baseUrl}finance-manager/allresidentsBill";
+  static const String searchResidentsBill = "${baseUrl}finance-manager/searchResidentsBill";
 }

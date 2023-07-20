@@ -6,7 +6,10 @@ import 'package:hexcolor/hexcolor.dart';
 class BuildDataRowText extends StatelessWidget {
   final String? text;
 
-  const BuildDataRowText({super.key, this.text});
+  final Color? color;
+
+  const BuildDataRowText({this.text, this.color});
+
   @override
   Widget build(BuildContext context) {
     return Text(
@@ -15,7 +18,7 @@ class BuildDataRowText extends StatelessWidget {
           fontWeight: FontWeight.w500,
           fontSize: 14.sp,
           fontStyle: FontStyle.normal,
-          color: HexColor('#000000')),
+          color: color ?? HexColor('#000000')),
     );
   }
 }

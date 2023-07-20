@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../Constants/date_formatter.dart';
 import '../../../Data/Api Resp/api_response.dart';
 import '../../../Model/User.dart';
 import '../../../Repo/Residents Repo/residents_reopsitory.dart';
@@ -19,6 +20,16 @@ class ResidentsController extends GetxController {
   String? searchQuery;
   Timer? debouncer;
   String? selectedOption;
+
+  String startDate = "";
+  String? statusVal;
+  String? paymentTypeValue;
+  String? paymentVal;
+
+  List<String> paymentTypes = ['Cash', 'BankTransfer', 'Online', 'NA'];
+
+  List<String> statusTypes = ['paid', 'unpaid'];
+  bool loading = false;
 
   final residentsRepo = ResidentsRepository();
   List<String> dataColumnNames = [
@@ -37,7 +48,6 @@ class ResidentsController extends GetxController {
     "totalpaidamount",
     "status",
     "Payment Type",
-    
   ];
 
   late final Resident resident;
@@ -62,10 +72,10 @@ class ResidentsController extends GetxController {
     log(li.toString());
   }
 
-  viewAllResidentsApi({required bearerToken, required subAdminId}) {
+  viewAllResidentsApi({required bearerToken, required subAdminId}) async {
     setResponseStatus(Status.loading);
 
-    residentsRepo
+    await residentsRepo
         .residentsApi(
       bearerToken: bearerToken,
       subAdminId: subAdminId,
@@ -73,7 +83,21 @@ class ResidentsController extends GetxController {
     )
         .then((value) {
       li.clear();
+
       update();
+
+      // for (int i = 0; i < value.residentslist.length; i++) {
+      //   li.add(value.residentslist[i]);
+      //   // Print details of each resident
+      //   print(
+      //       "Resident $i: ${value.residentslist[i].firstname} ${value.residentslist[i].lastname}");
+      //   for (int j = 0; j < value.residentslist[i].bills.length; j++) {
+      //     billsLi.add(value.residentslist[i].bills[j]);
+
+      //     // Print details of each bill for the current resident
+      //     print("  Bill $j: ${value.residentslist[i].bills[j].charges}");
+      //   }
+      // }
 
       for (int i = 0; i < value.residentslist.length; i++) {
         li.add(value.residentslist[i]);
@@ -89,95 +113,71 @@ class ResidentsController extends GetxController {
     });
   }
 
-  // searchApi({
-  //   required search,
-  //   required bearerToken,
-  //   //required superAdminId
-  // }) async {
-  //   setResponseStatus(Status.loading);
+  searchResidentApi({
+    required search,
+    required bearerToken,
+    //required superAdminId
+  }) async {
+    setResponseStatus(Status.loading);
 
-  //   // Map<String, String> data = <String, String>{
-  //   //   'search': search,
-  //   //   //"superAdminId": superAdminId.toString()
-  //   // };
-  //   socitiesRepo
-  //       .searchApi(query: search, bearerToken: bearerToken)
-  //       .then((value) {
-  //     update();
-  //     if (kDebugMode) {
-  //       print(value);
+    await residentsRepo
+        .searchApi(
+            query: search, subAdminId: subAdminid, bearerToken: bearerToken)
+        .then((value) {
+      update();
+      if (kDebugMode) {
+        print(value);
+        li.clear();
 
-  //       li.clear();
-  //       update();
+        update();
+        for (int i = 0; i < value.residentslist.length; i++) {
+          li.add(value.residentslist[i]);
+        }
 
-  //       for (int i = 0; i < value.socitiesdata!.length; i++) {
-  //         li.add(value.socitiesdata![i]);
-  //       }
-  //       setResponseStatus(Status.completed);
-  //     }
-  //   }).onError((error, stackTrace) {
-  //     setResponseStatus(Status.error);
+        setResponseStatus(Status.completed);
+      }
+    }).onError((error, stackTrace) {
+      setResponseStatus(Status.error);
 
-  //     Get.snackbar('Error', '$error ', backgroundColor: Colors.white);
-  //     log(error.toString());
-  //     log(stackTrace.toString());
-  //   });
-  // }
+      Get.snackbar('Error', '$error ', backgroundColor: Colors.white);
+      log(error.toString());
+      log(stackTrace.toString());
+    });
+  }
 
-  // void debounce(
-  //   VoidCallback callback, {
-  //   Duration duration = const Duration(milliseconds: 1000),
-  // }) {
-  //   if (debouncer != null) {
-  //     debouncer!.cancel();
-  //     update();
-  //   }
+  void debounce(
+    VoidCallback callback, {
+    Duration duration = const Duration(milliseconds: 1000),
+  }) {
+    if (debouncer != null) {
+      debouncer!.cancel();
+      update();
+    }
 
-  //   debouncer = Timer(duration, callback);
-  //   update();
-  // }
+    debouncer = Timer(duration, callback);
+    update();
+  }
 
-  // @override
-  // void dispose() {
-  //   // TODO: implement dispose
-  //   super.dispose();
-  //   debouncer?.cancel();
-  //   searchController.dispose();
-  // }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    debouncer?.cancel();
+    searchController.dispose();
+  }
 
-  // radioButtonBuild(String val) {
-  //   selectedOption = val;
-  //   update();
-  // }
+  setPaymentTypeVal({required value}) {
+    paymentTypeValue = value;
+    update();
+  }
 
-  // filterApi({
-  //   required bearerToken,
-  //   required superAdminId,
-  //   required type,
-  // }) {
-  //   li.clear();
-  //   setResponseStatus(Status.loading);
+  setStatusTypeVal({required value}) {
+    statusVal = value;
+    update();
+  }
 
-  //   update();
-
-  //   socitiesRepo
-  //       .filterSocitieBuilding(
-  //           superAdminId: superAdminId, bearerToken: bearerToken, type: type)
-  //       .then((value) {
-  //     setResponseStatus(Status.completed);
-  //     li.clear();
-  //     update();
-
-  //     for (int i = 0; i < value.socitiesdata.length; i++) {
-  //       li.add(value.socitiesdata[i]);
-  //     }
-  //     Get.back();
-  //   }).onError((error, stackTrace) {
-  //     setResponseStatus(Status.error);
-
-  //     Get.snackbar('Error', '$error ', backgroundColor: Colors.white);
-  //     log(error.toString());
-  //     log(stackTrace.toString());
-  //   });
-  // }
+  selectDate(BuildContext context) async {
+    startDate = await DateFormatter().selectDate(context) ?? "";
+    update();
+  }
 }
