@@ -28,6 +28,30 @@ class ResidentsRepository {
     return Resident.fromJson(response);
   }
 
+  
+    Future<Resident> filterBillsApi(
+      {required subAdminId,
+      required bearerToken,
+      
+      String? startDate,
+      String? endDate,
+      String? paymentType,
+      String? status}) async {
+    if (status == "null" || status == null) {
+      status = "";
+    }
+
+    if (paymentType == "null" || paymentType == null) {
+      paymentType = "";
+    }
+    var response = await networkServices.getReq(
+        "${Api.allResidentfilterBills}subadminid=$subAdminId&status=$status&paymenttype=$paymentType&startdate=$startDate&enddate=$endDate",
+        bearerToken: bearerToken);
+    log(response.toString());
+
+    return Resident.fromJson(response);
+  }
+
   // Future<Society> filterSocitieBuilding(
   //     {required bearerToken, required superAdminId, required type}) async {
   //   var response = await networkServices.getReq(

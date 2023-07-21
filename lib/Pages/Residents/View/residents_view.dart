@@ -276,12 +276,9 @@ class ResidentsView extends GetView {
             positiveButtonText: 'Filters',
             negativeButtonText: 'Clear',
             onTapNegative: () {
-              // controller.billPageController.currentMonthBillsApi(
-              //     financeManagerId: controller.billPageController.user.data!.id,
-              //     subAdminId:
-              //         controller.billPageController.user.data!.subadminid,
-              //     bearerToken:
-              //         controller.billPageController.user.bearer.toString());
+              controller.viewAllResidentsApi(
+                  subAdminId: controller.subAdminid,
+                  bearerToken: controller.user.bearer.toString());
 
               Get.back();
             },
@@ -293,31 +290,23 @@ class ResidentsView extends GetView {
               // log(controller.billPageController.user.data!.subadminid
               //     .toString());
 
-              //  if (controller.startDate == "" &&
-              //     controller.statusVal == null &&
-              //      controller.paymentTypeValue == null) {
-              //   controller.billPageController.currentMonthBillsApi(
-              //       financeManagerId:
-              //           controller.billPageController.user.data!.id,
-              //       subAdminId:
-              //           controller.billPageController.user.data!.subadminid,
-              //       bearerToken:
-              //           controller.billPageController.user.bearer.toString());
-              Get.back();
-              // } else {
-              //   controller.filterBillsApi(
-              //       bearerToken:
-              //           controller.billPageController.user.bearer.toString(),
-              //       subAdminId: controller
-              //           .billPageController.user.data!.subadminid
-              //           .toString(),
-              //       financeManagerId:
-              //           controller.billPageController.user.data!.id,
-              //       startDate: controller.startDate.toString(),
-              //       endDate: controller.startDate.toString(),
-              //       status: controller.statusVal.toString(),
-              //       paymentType: controller.paymentTypeValue.toString());
-              // }
+              if (controller.startDate == "" &&
+                  controller.statusVal == null &&
+                  controller.paymentTypeValue == null) {
+                controller.viewAllResidentsApi(
+                    subAdminId: controller.subAdminid,
+                    bearerToken: controller.user.bearer.toString());
+
+                Get.back();
+              } else {
+                controller.allResidentFilterBillsApi(
+                    bearerToken: controller.user.bearer.toString(),
+                    subAdminId: controller.subAdminid.toString(),
+                    startDate: controller.startDate.toString(),
+                    endDate: controller.startDate.toString(),
+                    status: controller.statusVal.toString(),
+                    paymentType: controller.paymentTypeValue.toString());
+              }
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -409,87 +398,6 @@ class ResidentsView extends GetView {
               ],
             ),
           );
-        });
-  }
-
-  CustomAlertDialog _paymentDialog({
-    required BuildContext context,
-    required id,
-    required dueDate,
-    required appCharges,
-    required balance,
-    required payAbleAmount,
-    required month,
-    required noOfAppUsers,
-  }) {
-    return CustomAlertDialog(
-      titleText: 'Payment',
-      icon: Icons.payments,
-      positiveButtonText: 'Proceed',
-      context: context,
-      onTapPositive: () {
-        showDialog(
-            context: context,
-            builder: (context) {
-              return _selectPaymentMethodDialog(
-                  context: context, id: id, payAbleAmount: payAbleAmount);
-            });
-      },
-      child: PaymentBillWidget(
-        dueDate: dueDate,
-        appCharges: appCharges,
-        balance: balance,
-        payAbleAmount: payAbleAmount,
-        month: month,
-        noOfAppUsers: noOfAppUsers,
-      ),
-    );
-  }
-
-  Widget _selectPaymentMethodDialog(
-      {required BuildContext context, required id, required payAbleAmount}) {
-    return GetBuilder<ResidentsController>(
-        init: ResidentsController(),
-        builder: (controller) {
-          return CustomAlertDialog(
-              context: context,
-              icon: Icons.payments,
-              titleText: 'Select Payment Method',
-              loading: controller.loading,
-              onTapPositive: () {
-                // if (controller.paymentVal != null) {
-                //   if (!controller.loading) {
-                //     log(id.toString());
-                //     log(controller.paymentVal.toString());
-                //     log(payAbleAmount);
-                //     controller.payBillApi(
-                //         id: id.toString(),
-                //         paymentType: controller.paymentVal.toString(),
-                //         bearerToken: controller.billPageController.user.bearer,
-                //         totalPaidAmount: payAbleAmount);
-
-                //     controller.refreshUI();
-                //     Navigator.pop(context);
-                //     Navigator.pop(context);
-                //   }
-                // } else {
-                //   Get.snackbar('Error', 'please Select Payment Method',
-                //       colorText: Colors.redAccent,
-                //       backgroundColor: Colors.white);
-                // }
-              },
-              child: Column(
-                children: [
-                  ReusableDropdown(
-                    value: controller.paymentVal,
-                    items: controller.paymentTypes,
-                    onChanged: (value) {
-                      // controller.setPaymentVal(value: value);
-                    },
-                    hint: "Select Payment Method",
-                  ),
-                ],
-              ));
         });
   }
 }

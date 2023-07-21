@@ -180,4 +180,41 @@ class ResidentsController extends GetxController {
     startDate = await DateFormatter().selectDate(context) ?? "";
     update();
   }
+
+  allResidentFilterBillsApi({
+    required subAdminId,
+    required bearerToken,
+    String? startDate,
+    String? endDate,
+    String? paymentType,
+    String? status,
+  }) {
+    li.clear();
+    setResponseStatus(Status.loading);
+
+    update();
+
+    residentsRepo
+        .filterBillsApi(
+            subAdminId: subAdminId,
+            bearerToken: bearerToken,
+            paymentType: paymentType,
+            status: status,
+            endDate: endDate,
+            startDate: startDate)
+        .then((value) {
+      setResponseStatus(Status.completed);
+
+      for (int i = 0; i < value.residentslist!.length; i++) {
+        li.add(value.residentslist![i]);
+      }
+      Get.back();
+    }).onError((error, stackTrace) {
+      setResponseStatus(Status.error);
+
+      Get.snackbar('Error', '$error ', backgroundColor: Colors.white);
+      log(error.toString());
+      log(stackTrace.toString());
+    });
+  }
 }
