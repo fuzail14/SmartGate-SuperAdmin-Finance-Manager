@@ -136,9 +136,12 @@ class SocitiesView extends GetView {
         DataCell(BuildDataRowText(text: Type ?? "")),
         DataCell(GestureDetector(
             onTap: () {
-              Get.offNamed(residentsView, arguments: [user, subadminid]);
+              Get.offNamed(societyResidentsView, arguments: [user, subadminid]);
             },
-            child: Icon(Icons.details_rounded))),
+            child: Icon(
+              Icons.details_rounded,
+              color: primaryColor,
+            ))),
       ],
     );
   }

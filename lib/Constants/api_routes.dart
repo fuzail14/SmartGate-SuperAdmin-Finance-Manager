@@ -24,5 +24,11 @@ class Api {
    static const String allResidentfilterBills =
       "${baseUrl}super-finance-manager/filterBills/?";
 
+        static const String societyresidents = "${baseUrl}viewresidents";
+  static const String searchresident = "${baseUrl}searchresident";
+  static const String filterResident = "${baseUrl}filterResident";
+
+
+
   
 }

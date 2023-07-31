@@ -10,5 +10,9 @@ const String generateSocietyApartmentBillsPage =
     '/generate-society-apartment-bills-page';
 
 const String socitiesView = '/Socities_View';
+const String societyResidentsView = '/Society_Residents_View';
 
-const String residentsView = '/Residents_View';
+const String overAllBillView = '/OverAll_Bill_View';
+
+
+
