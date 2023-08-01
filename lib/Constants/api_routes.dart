@@ -18,17 +18,20 @@ class Api {
       "${baseUrl}society/filtersocietybuilding";
 
   static const String searchsociety = "${baseUrl}society/searchsociety";
-  static const String allresidentsBill = "${baseUrl}finance-manager/allresidentsBill";
-  static const String searchResidentsBill = "${baseUrl}finance-manager/searchResidentsBill";
+  static const String allresidentsBill =
+      "${baseUrl}finance-manager/allresidentsBill";
+  static const String searchResidentsBill =
+      "${baseUrl}finance-manager/searchResidentsBill";
 
-   static const String allResidentfilterBills =
+  static const String allResidentfilterBills =
       "${baseUrl}super-finance-manager/filterBills/?";
 
-        static const String societyresidents = "${baseUrl}viewresidents";
+  static const String societyresidents = "${baseUrl}viewresidents";
   static const String searchresident = "${baseUrl}searchresident";
   static const String filterResident = "${baseUrl}filterResident";
 
-
-
-  
+  static const String getIndividualBillsByResident =
+      "${baseUrl}individual-bill/getIndividualBillsByResident";
+  static const String filterIndividualBillsByResident =
+      "${baseUrl}individual-bill/filterIndividualBillsByResident/?";
 }

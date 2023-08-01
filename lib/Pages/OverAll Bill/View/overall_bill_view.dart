@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -8,6 +7,8 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:super_admin_finance_manager/Constants/size_box.dart';
 import '../../../Constants/colors.dart';
 import '../../../Data/Api Resp/api_response.dart';
+import '../../../Routes/set_routes.dart';
+import '../../../Widgets/Heading/my_heading.dart';
 import '../../../Widgets/Loader/loader.dart';
 import '../../../Widgets/My App Bar/my_app_bar.dart';
 import '../../../Widgets/TableColumnRow/build_data_column_text.dart';
@@ -15,7 +16,7 @@ import '../../../Widgets/TableColumnRow/build_data_row_text.dart';
 import '../../Socities/Widgets/custom_alert_dialog.dart';
 
 import '../Controller/overall_bill_controller.dart';
-import '../Widgets/payment_bill_widget.dart';
+
 import '../Widgets/reusable_dropdown.dart';
 
 class OverAllBillView extends GetView {
@@ -26,7 +27,6 @@ class OverAllBillView extends GetView {
         builder: (controller) {
           return Scaffold(
               backgroundColor: whiteColor,
-              appBar: const MyAppBar(title: 'Residents'),
               body: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 104.w),
                 child: SingleChildScrollView(
@@ -34,7 +34,14 @@ class OverAllBillView extends GetView {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         57.h.ph,
-                        _heading(),
+                        MyHeading(
+                            onTap: () {
+                              Get.offNamed(societyResidentsView, arguments: [
+                                controller.user,
+                                controller.subAdminId
+                              ]);
+                            },
+                            text: 'OverAll Bills'),
                         71.h.ph,
                         _buildSearchBarRow(controller, context),
                         57.h.ph,
@@ -97,14 +104,28 @@ class OverAllBillView extends GetView {
                 ])));
   }
 
-  Text _heading() {
-    return Text(
-      "Residents",
-      style: GoogleFonts.montserrat(
-          color: secondaryColor,
-          fontSize: 40.sp,
-          fontStyle: FontStyle.normal,
-          fontWeight: FontWeight.w600),
+  _heading(OverAllBillController controller) {
+    return Row(
+      children: [
+        GestureDetector(
+            onTap: () {
+              Get.offNamed(societyResidentsView,
+                  arguments: [controller.user, controller.subAdminId]);
+            },
+            child: Icon(
+              Icons.arrow_back,
+              color: primaryColor,
+            )),
+        20.pw,
+        Text(
+          "OverAll Bill",
+          style: GoogleFonts.montserrat(
+              color: secondaryColor,
+              fontSize: 40.sp,
+              fontStyle: FontStyle.normal,
+              fontWeight: FontWeight.w600),
+        ),
+      ],
     );
   }
 
@@ -169,7 +190,8 @@ class OverAllBillView extends GetView {
     );
   }
 
-  Row _buildSearchBarRow(OverAllBillController controller, BuildContext context) {
+  Row _buildSearchBarRow(
+      OverAllBillController controller, BuildContext context) {
     return Row(
       children: [
         Expanded(

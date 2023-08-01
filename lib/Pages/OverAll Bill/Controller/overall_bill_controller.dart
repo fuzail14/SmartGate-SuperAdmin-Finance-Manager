@@ -14,6 +14,8 @@ class OverAllBillController extends GetxController {
   var userdata = Get.arguments;
   late final User user;
   int? residentId;
+  String? subAdminId;
+  
   var responseStatus = Status.loading;
   TextEditingController searchController = TextEditingController();
   String typeSociety = 'society';
@@ -66,6 +68,8 @@ class OverAllBillController extends GetxController {
     super.onInit();
     user = userdata[0];
     residentId = userdata[1];
+
+    subAdminId = userdata[2];
     viewAllResidentsApi(bearerToken: user.bearer, subAdminId: residentId);
 
     log(user.bearer.toString());

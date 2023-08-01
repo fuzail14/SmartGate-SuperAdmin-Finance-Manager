@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:super_admin_finance_manager/Routes/screen_binding.dart';
 import 'package:super_admin_finance_manager/Routes/set_routes.dart';
 import '../Pages/Home Page/View/home_page.dart';
+import '../Pages/IndividualBill/View/individual_bill_view.dart';
 import '../Pages/Login/View/login.dart';
 import '../Pages/OverAll Bill/View/overall_bill_view.dart';
 
@@ -47,6 +48,17 @@ class RouteManagement {
           binding: ScreenBindings(),
           transition: Transition.fade,
           transitionDuration: const Duration(seconds: 1)),
+          GetPage(
+          name: individualBillView,
+          page: () => IndividualBillView(),
+          binding: ScreenBindings(),
+          transition: Transition.fade,
+          transitionDuration: const Duration(seconds: 1)),
+
+
+
+
+          
 
 
 

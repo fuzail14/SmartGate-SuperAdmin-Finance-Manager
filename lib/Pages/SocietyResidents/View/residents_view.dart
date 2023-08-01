@@ -11,6 +11,7 @@ import '../../../../Data/Api Resp/api_response.dart';
 import '../../../../Widgets/Loader/loader.dart';
 import '../../../../Widgets/My App Bar/my_app_bar.dart';
 import '../../../Routes/set_routes.dart';
+import '../../../Widgets/Heading/my_heading.dart';
 import '../../../Widgets/TableColumnRow/build_data_column_status_card.dart';
 import '../../../Widgets/TableColumnRow/build_data_column_text.dart';
 import '../../../Widgets/TableColumnRow/build_data_row_text.dart';
@@ -26,11 +27,6 @@ class SocietyResidentsView extends GetView {
         builder: (controller) {
           return Scaffold(
               backgroundColor: whiteColor,
-              appBar: MyAppBar(
-                  title: 'Residents',
-                  onTap: () {
-                    Get.offNamed(homePage, arguments: controller.user);
-                  }),
               body: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 104.w),
                 child: SingleChildScrollView(
@@ -38,7 +34,12 @@ class SocietyResidentsView extends GetView {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         57.h.ph,
-                        _heading(),
+                        MyHeading(
+                            onTap: () {
+                              Get.offNamed(homePage,
+                                  arguments: controller.user);
+                            },
+                            text: 'Residents'),
                         71.h.ph,
                         _buildSearchBarRow(controller, context),
                         57.h.ph,
@@ -158,20 +159,25 @@ class SocietyResidentsView extends GetView {
                     text: "OverAll Bill",
                     color: Colors.orange,
                     onTap: () {
-                      Get.offNamed(overAllBillView,
-                          arguments: [controller.user, residentid]);
+                      Get.offNamed(overAllBillView, arguments: [
+                        controller.user,
+                        residentid,
+                        controller.subAdminId,
+                      ]);
                     }),
               ] else if (controller.routeSelectionVal == 'Individual Bill') ...[
                 BuildDataColumnStatusCard(
-                  height: 40.h,
-                  width: 100.w,
-                  text: "Individual bill",
-                  color: Colors.orange,
-                  // onTap: () {
-                  //   Get.offNamed(overAllBillView,
-                  //       arguments: [controller.user, residentid]);
-                  // }
-                ),
+                    height: 40.h,
+                    width: 100.w,
+                    text: "Individual bill",
+                    color: Colors.orange,
+                    onTap: () {
+                      Get.offNamed(individualBillView, arguments: [
+                        controller.user,
+                        residentid,
+                        controller.subAdminId,
+                      ]);
+                    }),
               ]
             ],
           ),

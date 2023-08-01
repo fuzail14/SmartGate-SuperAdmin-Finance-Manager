@@ -13,6 +13,9 @@ const String socitiesView = '/Socities_View';
 const String societyResidentsView = '/Society_Residents_View';
 
 const String overAllBillView = '/OverAll_Bill_View';
+const String individualBillView = '/Individual_Bill_View';
+
+
 
 
 

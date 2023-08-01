@@ -37,7 +37,7 @@ class SocietyResidentsController extends GetxController {
     "propertytype",
     "vechileno",
     "residenttype",
-    "Generate Bill"
+    "View Bills"
   ];
 
   late final SocietyResident societyResident;
